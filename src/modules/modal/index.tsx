@@ -109,7 +109,7 @@ const Modal: FC<Props> = ({ onRequestClose, store, dispatch }) => {
                     type={TypeAction.UPDATE_TIME}
                     value={store.time}
                     onChange={onChange}
-                    typeHours={store.typeOfHours}
+                    typeOfHours={store.typeOfHours}
                     hoursInDay={store.hoursInDay}
                     breakMinTime={store.breakMinTime}
                   />

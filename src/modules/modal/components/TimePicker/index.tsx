@@ -1,12 +1,13 @@
 import React, { useState, FC } from 'react';
 import DatePicker from 'react-datepicker';
 import { OnChangeDispatch, Store, TypeAction } from '../../../../types';
+import { updateTime } from '../../../../utils/getDateTime';
 
 type Props = {
   name: keyof Store;
   type: TypeAction.UPDATE_TIME;
   value: { start: Date | null; end: Date | null };
-  typeHours: number;
+  typeOfHours: number;
   hoursInDay: number;
   breakMinTime: number;
   onChange: OnChangeDispatch;
@@ -15,23 +16,19 @@ const TimePicker: FC<Props> = ({
   name,
   type,
   value,
-  typeHours,
+  typeOfHours,
   hoursInDay,
   breakMinTime,
   onChange,
 }) => {
   const [startDate, setStartDate] = useState(value.start || new Date());
 
-  const endDate = new Date(
-    startDate.getTime() + (hoursInDay * typeHours + breakMinTime) * 60 * 1000,
-  );
-
   return (
     <div className="input-group">
       <div className="flex">
         <DatePicker
           dateFormat="HH:mm"
-          timeIntervals={typeHours}
+          timeIntervals={typeOfHours}
           selected={value.start}
           minDate={new Date()}
           showTimeSelect
@@ -41,10 +38,12 @@ const TimePicker: FC<Props> = ({
             onChange(type, {
               [name]: {
                 start: date,
-                end: new Date(
-                  date.getTime() +
-                    (hoursInDay * typeHours + breakMinTime) * 60 * 1000,
-                ),
+                end: updateTime({
+                  startTime: date,
+                  hoursInDay,
+                  typeOfHours,
+                  breakMinTime,
+                }),
               },
             });
           }}
@@ -56,7 +55,7 @@ const TimePicker: FC<Props> = ({
       <div className="flex">
         <DatePicker
           dateFormat="HH:mm"
-          selected={endDate}
+          selected={value.end}
           minDate={startDate}
           showTimeSelect
           showTimeSelectOnly
