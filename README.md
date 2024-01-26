@@ -8,6 +8,6 @@ Code style: Prettier/Eslint;
 
 IDE: Visual Studio Code;
 
-1 `yarn install` for add dependencies;
+1 `yarn install` or `yarn` for add dependencies;
 
 2 `npm/yarn start` Runs the app in the development mode;
