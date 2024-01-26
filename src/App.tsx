@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { FC, useState, useReducer } from 'react';
+import { createPortal } from 'react-dom';
+import Modal from './modules/modal';
 
-function App() {
+import { reducer, initialStore } from './reducer';
+
+const App: FC = () => {
+  const [store, dispatch] = useReducer(reducer, initialStore);
+
+  const [open, setModalOpen] = useState(false);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {open &&
+        createPortal(
+          <Modal
+            onRequestClose={() => setModalOpen(false)}
+            store={store}
+            dispatch={dispatch}
+          />,
+          document.getElementById('modal-root')!,
+        )}
+
+      <div className="container">
+        <div className="row">
+          <div className="col text-center">
+            <button
+              type="button"
+              className="btn btn-primary btn-lg mt-5"
+              onClick={() => setModalOpen(true)}
+            >
+              Schedule
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
-}
+};
 
 export default App;
